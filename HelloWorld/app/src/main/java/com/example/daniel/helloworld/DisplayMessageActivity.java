@@ -22,6 +22,10 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         TextView textViewMessage = (TextView) findViewById(R.id.page2_display_text);
         textViewMessage.setText(message);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // If your minSdkVersion is 11 or higher, instead use:
+        // getActionBar().setDisplayHomeAsUpEnabled(true);
 //
 //        TextView textView = new TextView(this);
 //        textView.setTextSize(40);
