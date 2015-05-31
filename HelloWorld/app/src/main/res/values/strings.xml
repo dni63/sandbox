@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HelloWorld</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_go">Page 2</string>
+    <string name="txt_type_something">Type something here</string>
+    <string name="title_activity_display_message">DisplayMessageActivity</string>
+    <string name="txt_page2_original_message">You Typed: </string>
+</resources>
