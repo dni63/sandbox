@@ -79,6 +79,7 @@ public class NoteListActivityMultiColumn extends ActionBarActivity {
     public void btn_add_click(View view) {
         Intent intent = new Intent(this, CreateNoteActivity.class);
         startActivityForResult(intent, CREATE_REQUEST_INT);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
