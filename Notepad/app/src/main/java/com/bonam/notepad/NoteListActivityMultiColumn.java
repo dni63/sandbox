@@ -1,5 +1,7 @@
 package com.bonam.notepad;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,45 +11,35 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bonam.notepad.entity.Note;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class NoteListActivityMultiColumn extends ActionBarActivity {
 
+    public static final int CREATE_REQUEST_INT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list_activity_multi_column);
 
+        refreshList();
+    }
+
+    private void refreshList() {
         ListView listView=(ListView)findViewById(R.id.lst_note_multi_column);
 
-        ArrayList list=new ArrayList<HashMap<String,String>>();
+        DBHelper dbHelper = new DBHelper(this);
+        ArrayList<Note> noteList = dbHelper.getAllNotes();
 
-        HashMap<String,String> temp=new HashMap<String, String>();
-        temp.put(NoteListAdapter.FIRST_COLUMN, "Ankit Karia");
-        temp.put(NoteListAdapter.SECOND_COLUMN, "Male");
-        temp.put(NoteListAdapter.THIRD_COLUMN, "22");
-        temp.put(NoteListAdapter.FOURTH_COLUMN, "Unmarried");
-        list.add(temp);
-
-        HashMap<String,String> temp2=new HashMap<String, String>();
-        temp2.put(NoteListAdapter.FIRST_COLUMN, "Rajat Ghai");
-        temp2.put(NoteListAdapter.SECOND_COLUMN, "Male");
-        temp2.put(NoteListAdapter.THIRD_COLUMN, "25");
-        temp2.put(NoteListAdapter.FOURTH_COLUMN, "Unmarried");
-        list.add(temp2);
-
-        HashMap<String,String> temp3=new HashMap<String, String>();
-        temp3.put(NoteListAdapter.FIRST_COLUMN, "Karina Kaif");
-        temp3.put(NoteListAdapter.SECOND_COLUMN, "Female");
-        temp3.put(NoteListAdapter.THIRD_COLUMN, "31");
-        temp3.put(NoteListAdapter.FOURTH_COLUMN, "Unmarried");
-        list.add(temp3);
-
-        NoteListAdapter adapter=new NoteListAdapter(this, list);
+        NoteListAdapter adapter=new NoteListAdapter(this, noteList);
         listView.setAdapter(adapter);
+
+        final Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -55,9 +47,10 @@ public class NoteListActivityMultiColumn extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
             {
                 int pos=position+1;
-                Toast.makeText(NoteListActivityMultiColumn.this, Integer.toString(pos) + " Clicked", Toast.LENGTH_SHORT).show();
+                toast.setText(Integer.toString(pos) + " Clicked");
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.show();
             }
-
         });
     }
 
@@ -81,5 +74,23 @@ public class NoteListActivityMultiColumn extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void btn_add_click(View view) {
+        Intent intent = new Intent(this, CreateNoteActivity.class);
+        startActivityForResult(intent, CREATE_REQUEST_INT);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (CREATE_REQUEST_INT) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    refreshList();
+                }
+                break;
+            }
+        }
     }
 }

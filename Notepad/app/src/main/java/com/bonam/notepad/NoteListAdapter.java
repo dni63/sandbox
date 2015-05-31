@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.bonam.notepad.entity.Note;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,19 +23,15 @@ import java.util.List;
 
 public class NoteListAdapter extends BaseAdapter {
 
-    public static final String FIRST_COLUMN = "First";
-    public static final String SECOND_COLUMN = "Second";
-    public static final String THIRD_COLUMN = "Third";
-    public static final String FOURTH_COLUMN = "Fourth";
+    public static final String FIRST_COLUMN = "Title";
+    public static final String SECOND_COLUMN = "LastModified";
 
-    public ArrayList<HashMap<String, String>> list;
+    public ArrayList<Note> list;
     Activity activity;
-    TextView txtFirst;
-    TextView txtSecond;
-    TextView txtThird;
-    TextView txtFourth;
+    TextView txtTitle;
+    TextView txtLastModified;
 
-    public NoteListAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
+    public NoteListAdapter(Activity activity, ArrayList<Note> list) {
         super();
         this.activity = activity;
         this.list = list;
@@ -61,26 +59,18 @@ public class NoteListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-
-
         LayoutInflater inflater = activity.getLayoutInflater();
 
         if (convertView == null) {
-
             convertView = inflater.inflate(R.layout.note_row, null);
 
-            txtFirst = (TextView) convertView.findViewById(R.id.name);
-            txtSecond = (TextView) convertView.findViewById(R.id.gender);
-            txtThird = (TextView) convertView.findViewById(R.id.age);
-            txtFourth = (TextView) convertView.findViewById(R.id.status);
-
+            txtTitle = (TextView) convertView.findViewById(R.id.row_title);
+            txtLastModified = (TextView) convertView.findViewById(R.id.row_last_modified);
         }
 
-        HashMap<String, String> map = list.get(position);
-        txtFirst.setText(map.get(FIRST_COLUMN));
-        txtSecond.setText(map.get(SECOND_COLUMN));
-        txtThird.setText(map.get(THIRD_COLUMN));
-        txtFourth.setText(map.get(FOURTH_COLUMN));
+        Note note = list.get(position);
+        txtTitle.setText(note.getTitle());
+        txtLastModified.setText(note.getLastModifiedStr());
 
         return convertView;
     }

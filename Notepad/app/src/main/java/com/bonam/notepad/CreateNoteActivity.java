@@ -1,5 +1,7 @@
 package com.bonam.notepad;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,6 +24,8 @@ public class CreateNoteActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_create_note, menu);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         return true;
     }
 
@@ -43,9 +47,13 @@ public class CreateNoteActivity extends ActionBarActivity {
     public void btn_save_click(View view) {
         EditText txtTitle = (EditText) findViewById(R.id.txt_title);
         EditText txtNote = (EditText) findViewById(R.id.txt_note);
-        if(validateNote(txtTitle.toString(), txtNote.toString())) {
+        if(validateNote(txtTitle.getText().toString(), txtNote.getText().toString())) {
             DBHelper dbHelper = new DBHelper(view.getContext());
             dbHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString());
+            Toast.makeText(this, getString(R.string.msg_save_successful), Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 

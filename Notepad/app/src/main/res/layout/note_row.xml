@@ -4,28 +4,16 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/row_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/gender"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/age"
+        android:id="@+id/row_last_modified"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5" />
-
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
 
 </LinearLayout>

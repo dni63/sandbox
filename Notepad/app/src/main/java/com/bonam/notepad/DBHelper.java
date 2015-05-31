@@ -7,7 +7,10 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.bonam.notepad.entity.Note;
+
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 /**
@@ -83,9 +86,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[] { Integer.toString(id) });
     }
 
-    public ArrayList<String> getAllNotes()
+    public ArrayList<Note> getAllNotes()
     {
-        ArrayList<String> array_list = new ArrayList<String>();
+        ArrayList<Note> array_list = new ArrayList<Note>();
 
         //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -93,7 +96,12 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
-            array_list.add(res.getString(res.getColumnIndex(NOTE_COLUMN_TITLE)));
+            Note note = new Note();
+            note.setTitle(res.getString(res.getColumnIndex(NOTE_COLUMN_TITLE)));
+            note.setLastModified(new GregorianCalendar());
+            note.setNote(res.getString(res.getColumnIndex(NOTE_COLUMN_NOTE)));
+
+            array_list.add(note);
             res.moveToNext();
         }
         return array_list;

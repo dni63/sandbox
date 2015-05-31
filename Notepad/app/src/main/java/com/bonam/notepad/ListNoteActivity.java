@@ -10,7 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bonam.notepad.entity.Note;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class ListNoteActivity extends ActionBarActivity {
@@ -24,7 +27,15 @@ public class ListNoteActivity extends ActionBarActivity {
         final ListView listView = (ListView) findViewById(R.id.lst_note);
 
         DBHelper dbHelper = new DBHelper(this);
-        ArrayList<String> noteList = dbHelper.getAllNotes();
+        ArrayList<Note> noteList = dbHelper.getAllNotes();
+
+        ArrayList<String> viewList = new ArrayList<String>();
+
+        Iterator<Note> iter = noteList.iterator();
+        while(iter.hasNext()) {
+            Note note = iter.next();
+            viewList.add(note.getTitle());
+        }
 
         // Defined Array values to show in ListView
         String[] values = new String[] { "Android List View",
@@ -44,7 +55,7 @@ public class ListNoteActivity extends ActionBarActivity {
         // Forth - the Array of data
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_2, android.R.id.text1, noteList);
+                android.R.layout.simple_list_item_2, android.R.id.text1, viewList);
 
 
         // Assign adapter to ListView
