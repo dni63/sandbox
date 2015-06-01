@@ -75,8 +75,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
-        contentValues.put("note", Note.getDefaultLastModified());
-        contentValues.put("last_modified", "datetime()");
+        contentValues.put("note", note);
+        contentValues.put("last_modified", Note.getDefaultLastModified());
         db.update("note", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
@@ -100,6 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while(res.isAfterLast() == false){
             Note note = new Note();
+            note.setId(res.getInt(res.getColumnIndex(NOTE_COLUMN_ID)));
             note.setTitle(res.getString(res.getColumnIndex(NOTE_COLUMN_TITLE)));
             note.setLastModified(res.getString(res.getColumnIndex(NOTE_COLUMN_LAST_MODIFIED)));
             note.setNote(res.getString(res.getColumnIndex(NOTE_COLUMN_NOTE)));

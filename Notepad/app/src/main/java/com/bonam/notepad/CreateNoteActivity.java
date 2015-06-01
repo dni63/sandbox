@@ -9,14 +9,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.bonam.notepad.entity.Note;
 
 
 public class CreateNoteActivity extends ActionBarActivity {
+
+    private Note selectedNote;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
+        selectedNote = (Note) getIntent().getParcelableExtra(getString(R.string.key_selected_note));
+
+        if(selectedNote != null) {
+            //edit mode
+            EditText txtNote = (EditText) findViewById(R.id.txt_note);
+            EditText txtTitle = (EditText) findViewById(R.id.txt_title);
+
+            txtNote.setText(selectedNote.getNote());
+            txtTitle.setText(selectedNote.getTitle());
+
+            setTitle(getString(R.string.title_activity_edit_note));
+
+            txtTitle.setSelection(selectedNote.getTitle().length());
+        }
     }
 
     @Override
@@ -55,9 +72,13 @@ public class CreateNoteActivity extends ActionBarActivity {
         EditText txtTitle = (EditText) findViewById(R.id.txt_title);
         EditText txtNote = (EditText) findViewById(R.id.txt_note);
         if(validateNote(txtTitle.getText().toString(), txtNote.getText().toString())) {
-            DBHelper dbHelper = new DBHelper(view.getContext());
-            dbHelper.insertNote(txtTitle.getText().toString(), txtNote.getText().toString());
-            Toast.makeText(this, getString(R.string.msg_save_successful), Toast.LENGTH_SHORT).show();
+            if(selectedNote == null) {
+                //add mode
+                saveNote(view, txtTitle.getText().toString(), txtNote.getText().toString());
+            } else {
+                editNote(view, selectedNote.getId(), txtTitle.getText().toString(), txtNote.getText().toString());
+            }
+
             Intent resultIntent = new Intent();
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
@@ -65,10 +86,22 @@ public class CreateNoteActivity extends ActionBarActivity {
         }
     }
 
+    private void saveNote(View view, String title, String note) {
+        DBHelper dbHelper = new DBHelper(view.getContext());
+        dbHelper.insertNote(title, note);
+        Toast.makeText(this, getString(R.string.msg_save_successful), Toast.LENGTH_SHORT).show();
+    }
+
+    private void editNote(View view, int id, String title, String note) {
+        DBHelper dbHelper = new DBHelper(view.getContext());
+        dbHelper.updateNote(id, title, note);
+        Toast.makeText(this, getString(R.string.msg_edit_successful), Toast.LENGTH_SHORT).show();
+    }
+
     public boolean validateNote(String title, String note) {
         if(title.isEmpty() || note.isEmpty()) {
             Toast.makeText(getApplicationContext(),
-                    "Please insert title and note", Toast.LENGTH_LONG)
+                    getString(R.string.msg_title_note_required), Toast.LENGTH_LONG)
                     .show();
             return false;
         }

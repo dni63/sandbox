@@ -1,5 +1,8 @@
 package com.bonam.notepad.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,12 +13,26 @@ import java.util.GregorianCalendar;
 /**
  * Created by Daniel on 31/05/2015.
  */
-public class Note {
+public class Note implements Parcelable {
     private int id;
     private String title;
     private GregorianCalendar lastModified;
     private String note;
     private String lastModifiedStr;
+
+    // Parcelling part
+    public Note(Parcel in){
+        String[] data = new String[4];
+
+        in.readStringArray(data);
+        this.setId(Integer.valueOf(data[0]));
+        this.setTitle(data[1]);
+        this.setNote(data[2]);
+        this.setLastModified(data[3]);
+    }
+
+    public Note(){
+    }
 
     public int getId() {
         return this.id;
@@ -78,4 +95,28 @@ public class Note {
     public String getNote() {
         return this.note;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringArray(new String[]{
+                String.valueOf(this.id),
+                this.title,
+                this.note,
+                this.getLastModifiedStr()});
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
+        }
+
+        public Note[] newArray(int size) {
+            return new Note[size];
+        }
+    };
 }
