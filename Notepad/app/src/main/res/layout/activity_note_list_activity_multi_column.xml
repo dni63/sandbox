@@ -10,7 +10,6 @@
     <ListView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_weight="1"
         android:id="@+id/lst_note_multi_column"
         android:layout_above="@+id/button"
         android:layout_alignParentTop="true"

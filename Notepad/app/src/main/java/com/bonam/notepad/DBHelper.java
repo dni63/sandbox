@@ -23,11 +23,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String NOTE_COLUMN_ID = "id";
     public static final String NOTE_COLUMN_TITLE = "title";
     public static final String NOTE_COLUMN_NOTE = "note";
+    public static final String NOTE_COLUMN_LAST_MODIFIED = "last_modified";
     private HashMap hp;
 
     public DBHelper(Context context)
     {
-        super(context, DATABASE_NAME , null, 1);
+        super(context, DATABASE_NAME , null, 2);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table note " +
-                        "(id integer primary key, title text, note text)"
+                        "(id integer primary key, title text, note text, last_modified date)"
         );
     }
 
@@ -52,6 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
         contentValues.put("note", note);
+        contentValues.put("last_modified", Note.getDefaultLastModified());
         db.insert("note", null, contentValues);
         return true;
     }
@@ -73,7 +75,8 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
-        contentValues.put("note", note);
+        contentValues.put("note", Note.getDefaultLastModified());
+        contentValues.put("last_modified", "datetime()");
         db.update("note", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
@@ -92,18 +95,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from note", null );
+        Cursor res =  db.rawQuery( "select * from note order by last_modified desc", null );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
             Note note = new Note();
             note.setTitle(res.getString(res.getColumnIndex(NOTE_COLUMN_TITLE)));
-            note.setLastModified(new GregorianCalendar());
+            note.setLastModified(res.getString(res.getColumnIndex(NOTE_COLUMN_LAST_MODIFIED)));
             note.setNote(res.getString(res.getColumnIndex(NOTE_COLUMN_NOTE)));
-
+            System.out.println("Note = " +note.getNote());
             array_list.add(note);
             res.moveToNext();
         }
+
+        System.out.println("size=" + array_list.size());
+
         return array_list;
     }
 }

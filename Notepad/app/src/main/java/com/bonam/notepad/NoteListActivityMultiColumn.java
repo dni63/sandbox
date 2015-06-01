@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bonam.notepad.entity.Note;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -28,17 +29,11 @@ public class NoteListActivityMultiColumn extends ActionBarActivity {
         setContentView(R.layout.activity_note_list_activity_multi_column);
 
         refreshList();
+        setClickListener();
     }
 
-    private void refreshList() {
+    private void setClickListener() {
         ListView listView=(ListView)findViewById(R.id.lst_note_multi_column);
-
-        DBHelper dbHelper = new DBHelper(this);
-        ArrayList<Note> noteList = dbHelper.getAllNotes();
-
-        NoteListAdapter adapter=new NoteListAdapter(this, noteList);
-        listView.setAdapter(adapter);
-
         final Toast toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -52,6 +47,24 @@ public class NoteListActivityMultiColumn extends ActionBarActivity {
                 toast.show();
             }
         });
+    }
+
+    private void refreshList() {
+        ListView listView=(ListView)findViewById(R.id.lst_note_multi_column);
+
+        DBHelper dbHelper = new DBHelper(this);
+        ArrayList<Note> noteList = dbHelper.getAllNotes();
+//        ArrayList<Note> noteList = new ArrayList<Note>();
+//        for(int i=1;i<20;i++) {
+//            Note note = new Note();
+//            note.setTitle("The " + i);
+//            note.setLastModified(new GregorianCalendar());
+//            noteList.add(note);
+//        }
+
+
+        NoteListAdapter adapter=new NoteListAdapter(this, noteList);
+        listView.setAdapter(adapter);
     }
 
     @Override

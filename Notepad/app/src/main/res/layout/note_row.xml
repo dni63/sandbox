@@ -1,19 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/row_title"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:textStyle="bold" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/row_last_modified"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5" />-->
+
+<!--</LinearLayout>-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/row_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:padding="2dip"
+
+        android:textColor="#736F6E"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/row_last_modified"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/row_title"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:padding="2dip"
 
-</LinearLayout>
+        android:textColor="#736F6E"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

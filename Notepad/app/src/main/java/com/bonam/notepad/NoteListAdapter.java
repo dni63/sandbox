@@ -61,17 +61,29 @@ public class NoteListAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         LayoutInflater inflater = activity.getLayoutInflater();
 
+        ViewHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.note_row, null);
 
-            txtTitle = (TextView) convertView.findViewById(R.id.row_title);
-            txtLastModified = (TextView) convertView.findViewById(R.id.row_last_modified);
+            holder = new ViewHolder();
+
+            holder.title = (TextView) convertView.findViewById(R.id.row_title);
+            holder.lastModified = (TextView) convertView.findViewById(R.id.row_last_modified);
+
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Note note = list.get(position);
-        txtTitle.setText(note.getTitle());
-        txtLastModified.setText(note.getLastModifiedStr());
+        holder.title.setText(list.get(position).getTitle());
+        holder.lastModified.setText(list.get(position).getLastModifiedStr());
 
         return convertView;
+    }
+
+    static class ViewHolder {
+        TextView title;
+        TextView lastModified;
     }
 }
